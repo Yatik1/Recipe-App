@@ -12,13 +12,23 @@ function Popular() {
   },[]);
 
   const getPopular = async () => {
-    const api = await fetch ( 
-      `https://api.spoonacular.com/recipes/random?apiKey=e574895da5144fcab0c286277b789698&number=9`
-      );
-    const data = await api.json();
-    console.log(data)
-    setPopular(data.recipes)
-  }
+
+    const check = localStorage.getItem("popular");
+    
+    if(check) {
+      setPopular(JSON.parse(check));
+    } else 
+     {
+        const api = await fetch ( 
+           `https://api.spoonacular.com/recipes/random?apiKey=e574895da5144fcab0c286277b789698&number=9`
+          );
+        const data = await api.json();
+        
+         localStorage.setItem("popular" , JSON.stringify(data.recipes)); 
+        console.log(data)
+        setPopular(data.recipes)
+      }
+  } 
 
   return (
     <Wrapper>
@@ -48,9 +58,15 @@ function Popular() {
 
 const Wrapper = styled.div`
   margin: 4rem 0rem;
+
+  h3{
+    margin-left: 20px;
+  }
 `;
 
 const Card = styled.div`
+   margin-top: 22px;
+   margin-left: 17px;
    min-height: 20rem;
    border-radius: 2rem;
    overflow: hidden;
