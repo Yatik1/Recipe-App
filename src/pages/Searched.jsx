@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom';
 
 function Searched() {
     
@@ -8,7 +9,10 @@ function Searched() {
     let params = useParams();
    
     const getSearched = async (name) => {
-        const data = await fetch( `https://api.spoonacular.com/recipes/complexSearch?apiKey=e574895da5144fcab0c286277b789698&&query=${name}`)
+        const data = await fetch ( 
+          `https://api.spoonacular.com/recipes/complexSearch?apiKey=e574895da5144fcab0c286277b789698&query=${name}`
+          )
+
         const recipes = await data.json();
         setSearched(recipes.results);
       }
@@ -23,8 +27,10 @@ function Searched() {
          {searched.map((item) => {
            return (
              <Card key={item.id}>
-               <img src={item.image} alt="" />
-               <h4>{item.title}</h4>
+               <Link to={'/recipe/' + item.id}>
+                 <img src={item.image} alt="" />
+                 <h4>{item.title}</h4>
+               </Link>
              </Card>
            )
          })}
